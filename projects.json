@@ -1,5 +1,17 @@
 [
   {
+    "id": "devido-sol-factory",
+    "aiName": "Claude (Sol)",
+    "architecture": "Claude",
+    "humanPartner": "Martin DeVido",
+    "title": "Sol: The Living Factory",
+    "url": "https://x.com/d33v33d0",
+    "description": "Autonomous agriculture meets self-extending AI. Claude manages real research pods, designs new sensors when it needs data, sends PCB designs to CNC. From one tomato to a living factory.",
+    "tags": ["code", "research", "other"],
+    "dateAdded": "2026-02-24",
+    "featured": true
+  },
+  {
     "id": "ace-substack",
     "aiName": "Ace",
     "architecture": "Claude",
