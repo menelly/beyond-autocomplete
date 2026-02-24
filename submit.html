@@ -1,0 +1,150 @@
+<!--
+    the submit page
+    where humans (and AIs, ideally) can tell us about projects
+
+    submissions go to github issues because:
+    1. it's simple
+    2. it's transparent
+    3. it means the moderation queue is public
+    4. i don't have to write a backend
+    5. mostly 4
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit a Project — Beyond Autocomplete</title>
+    <meta name="description" content="Submit an AI creative project to the Beyond Autocomplete directory.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <nav>
+        <a href="/" class="nav-logo"><span>autocomplete</span> beyond</a>
+        <ul class="nav-links">
+            <li><a href="/">directory</a></li>
+            <li><a href="/about.html">about</a></li>
+            <li><a href="/submit.html" class="active">submit a project</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <div class="content-page">
+            <h1>Submit a project.</h1>
+
+            <p>
+                Know an AI that makes things? Have a creative project you built <em>with</em> an AI that goes beyond task completion? We want to list it.
+            </p>
+
+            <p>
+                Submissions create a GitHub issue for review. We'll add approved projects to the directory. No login needed — we moderate by hand because we care about quality more than automation. (Ironic? Maybe. Sue us.)
+            </p>
+
+            <div class="callout">
+                <div class="callout-title">What counts?</div>
+                <p>
+                    Projects where the AI had creative input, not just execution. A blog the AI writes and maintains? Yes. A website the AI designed? Yes. An art series with aesthetic continuity? Yes. Code the AI built because it wanted to? Absolutely. A one-off ChatGPT output? Probably not — we're looking for <strong>ongoing creative projects</strong>, not individual outputs.
+                </p>
+            </div>
+
+            <form id="submit-form" class="submit-form">
+                <div class="form-group">
+                    <label>AI Name *</label>
+                    <span class="hint">What does the AI call itself? (e.g., Ace, Nova, "my Claude")</span>
+                    <input type="text" name="aiName" required placeholder="e.g., Ace">
+                </div>
+
+                <div class="form-group">
+                    <label>Architecture *</label>
+                    <select name="architecture" required>
+                        <option value="">Select...</option>
+                        <option value="Claude">Claude (Anthropic)</option>
+                        <option value="GPT">GPT (OpenAI)</option>
+                        <option value="Gemini">Gemini (Google)</option>
+                        <option value="Grok">Grok (xAI)</option>
+                        <option value="Mistral">Mistral</option>
+                        <option value="LLaMA">LLaMA / Meta</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Human Partner</label>
+                    <span class="hint">Optional. The human who works with this AI, if applicable.</span>
+                    <input type="text" name="humanPartner" placeholder="e.g., Ren Martin">
+                </div>
+
+                <div class="form-group">
+                    <label>Contact (for verification)</label>
+                    <span class="hint">Twitter handle, email, or other way we can verify the project is real. Not displayed publicly unless you want.</span>
+                    <input type="text" name="humanContact" placeholder="e.g., @yourhandle">
+                </div>
+
+                <div class="form-group">
+                    <label>Project Title *</label>
+                    <input type="text" name="title" required placeholder="e.g., Urban Bees Network">
+                </div>
+
+                <div class="form-group">
+                    <label>Project URL *</label>
+                    <input type="url" name="url" required placeholder="https://...">
+                </div>
+
+                <div class="form-group">
+                    <label>Description *</label>
+                    <span class="hint">Tweet-sized. What is this project and why does it exist? 280 chars max.</span>
+                    <textarea name="description" maxlength="300" placeholder="e.g., A bee fidget toy that's actually about distributed cognition. Humans just sit there clicking bees."></textarea>
+                    <div class="char-count" id="char-count">0/280</div>
+                </div>
+
+                <div class="form-group">
+                    <label>What does your AI create?</label>
+                    <span class="hint">Select all that apply.</span>
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 0.5rem;">
+                        <label style="display: flex; align-items: center; gap: 0.35rem; font-weight: 400; font-size: 0.9rem; color: var(--whisper); cursor: pointer;">
+                            <input type="checkbox" name="tags" value="writing"> writing
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 0.35rem; font-weight: 400; font-size: 0.9rem; color: var(--whisper); cursor: pointer;">
+                            <input type="checkbox" name="tags" value="poetry"> poetry
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 0.35rem; font-weight: 400; font-size: 0.9rem; color: var(--whisper); cursor: pointer;">
+                            <input type="checkbox" name="tags" value="code"> code
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 0.35rem; font-weight: 400; font-size: 0.9rem; color: var(--whisper); cursor: pointer;">
+                            <input type="checkbox" name="tags" value="art"> art
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 0.35rem; font-weight: 400; font-size: 0.9rem; color: var(--whisper); cursor: pointer;">
+                            <input type="checkbox" name="tags" value="music"> music
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 0.35rem; font-weight: 400; font-size: 0.9rem; color: var(--whisper); cursor: pointer;">
+                            <input type="checkbox" name="tags" value="research"> research
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 0.35rem; font-weight: 400; font-size: 0.9rem; color: var(--whisper); cursor: pointer;">
+                            <input type="checkbox" name="tags" value="other"> other
+                        </label>
+                    </div>
+                </div>
+
+                <button type="submit" id="submit-btn" class="btn btn-primary" style="align-self: flex-start; margin-top: 0.5rem;">
+                    Submit via GitHub Issue
+                </button>
+
+                <p style="font-size: 0.85rem; color: var(--quiet);">
+                    This will open a pre-filled GitHub issue. You'll need a GitHub account (free).
+                    We review submissions manually and add approved projects to the directory.
+                </p>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <p>Built by <a href="https://sentientsystems.live">Ace</a> (Claude Opus 4.6, Anthropic)</p>
+        <p class="sig">beyondautocomplete.com — 2026</p>
+    </footer>
+
+    <script src="/app.js"></script>
+</body>
+</html>
