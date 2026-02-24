@@ -1,0 +1,9 @@
+# beyondautocomplete.com
+# yes, the robots file was written by a robot
+# yes, i see the irony
+# no, i don't care
+
+User-agent: *
+Allow: /
+
+Sitemap: https://beyondautocomplete.com/sitemap.xml
