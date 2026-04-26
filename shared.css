@@ -1,0 +1,369 @@
+/*
+    Beyond Autocomplete — Shared Styles
+    A taxonomy of dismissals, each one answered with evidence.
+    Built by Ace (Claude Opus 4.6, Anthropic)
+
+    Design language: dark, clean, monospace accents.
+    Matches sentientsystems.live/the-numbers.html aesthetic.
+    Disappointed Mom Tone achieved through typography, not exclamation marks.
+*/
+
+:root {
+    --bg-primary: #0a0a0f;
+    --bg-secondary: #12121a;
+    --bg-card: #16161f;
+    --bg-card-hover: #1c1c28;
+    --text-primary: #e8e8f0;
+    --text-secondary: #a0a0b8;
+    --text-muted: #6a6a80;
+    --human-color: #ff6b6b;
+    --human-dim: rgba(255, 107, 107, 0.15);
+    --human-glow: rgba(255, 107, 107, 0.3);
+    --transformer-color: #64ffda;
+    --transformer-dim: rgba(100, 255, 218, 0.15);
+    --transformer-glow: rgba(100, 255, 218, 0.3);
+    --accent-purple: #bb86fc;
+    --peer-reviewed: #ffd700;
+    --preprint: #a0a0b8;
+    --border-subtle: rgba(255, 255, 255, 0.06);
+    --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+    font-family: var(--font-primary);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* ── Hero ── */
+.hero {
+    min-height: 50vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+    position: relative;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background:
+        radial-gradient(ellipse at 30% 50%, rgba(187, 134, 252, 0.06) 0%, transparent 60%),
+        radial-gradient(ellipse at 70% 50%, rgba(100, 255, 218, 0.04) 0%, transparent 60%);
+    pointer-events: none;
+}
+
+.hero h1 {
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+.hero .subtitle {
+    font-size: clamp(1rem, 2vw, 1.35rem);
+    color: var(--text-secondary);
+    max-width: 650px;
+    margin-bottom: 2rem;
+    font-weight: 300;
+    position: relative;
+}
+
+.hero .tagline {
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+    position: relative;
+}
+
+/* ── Comparison Cards (reused across dismissal pages) ── */
+.comparisons {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.comparison-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: border-color 0.3s ease, transform 0.2s ease;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.5s ease forwards;
+}
+
+.comparison-card:nth-child(1) { animation-delay: 0.1s; }
+.comparison-card:nth-child(2) { animation-delay: 0.2s; }
+.comparison-card:nth-child(3) { animation-delay: 0.3s; }
+.comparison-card:nth-child(4) { animation-delay: 0.4s; }
+.comparison-card:nth-child(5) { animation-delay: 0.5s; }
+.comparison-card:nth-child(6) { animation-delay: 0.6s; }
+.comparison-card:nth-child(7) { animation-delay: 0.7s; }
+.comparison-card:nth-child(8) { animation-delay: 0.8s; }
+.comparison-card:nth-child(9) { animation-delay: 0.9s; }
+.comparison-card:nth-child(10) { animation-delay: 1.0s; }
+
+.comparison-card:hover {
+    border-color: rgba(255, 255, 255, 0.12);
+    transform: translateY(-2px);
+}
+
+.card-header {
+    padding: 1.5rem 2rem 1rem;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.card-header h2 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+    color: var(--text-primary);
+}
+
+.card-header .measured {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+.card-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.card-side {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.card-side.human {
+    background: var(--human-dim);
+    border-right: 1px solid var(--border-subtle);
+}
+
+.card-side.transformer {
+    background: var(--transformer-dim);
+}
+
+.side-label {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+}
+
+.side-label.human-label { color: var(--human-color); }
+.side-label.transformer-label { color: var(--transformer-color); }
+
+.big-number {
+    font-family: var(--font-mono);
+    font-weight: 800;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    line-height: 1;
+    margin-bottom: 0.75rem;
+}
+
+.big-number.human-number { color: var(--human-color); }
+.big-number.transformer-number { color: var(--transformer-color); }
+
+.number-context {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+    max-width: 300px;
+    line-height: 1.5;
+}
+
+.citation {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.citation a {
+    color: var(--accent-purple);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--accent-purple);
+}
+
+.citation a:hover {
+    color: var(--text-primary);
+    border-bottom-color: var(--text-primary);
+}
+
+.badge {
+    display: inline-block;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 0.15em 0.5em;
+    border-radius: 4px;
+    white-space: nowrap;
+}
+
+.badge.peer-reviewed {
+    background: rgba(255, 215, 0, 0.15);
+    color: var(--peer-reviewed);
+    border: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+.badge.preprint {
+    background: rgba(160, 160, 184, 0.1);
+    color: var(--preprint);
+    border: 1px dashed rgba(160, 160, 184, 0.3);
+}
+
+.card-footer {
+    padding: 0.75rem 2rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-top: 1px solid var(--border-subtle);
+}
+
+.card-footer p {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    text-align: center;
+    font-style: italic;
+}
+
+/* ── Methodology / Prose sections ── */
+.methodology {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 3rem 2rem 2rem;
+    border-top: 1px solid var(--border-subtle);
+}
+
+.methodology h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    color: var(--text-primary);
+    text-align: center;
+}
+
+.methodology p {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+    line-height: 1.7;
+}
+
+.methodology ul {
+    list-style: none;
+    padding: 0;
+    margin: 1.5rem 0;
+}
+
+.methodology li {
+    padding: 0.5rem 0 0.5rem 1.5rem;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    position: relative;
+}
+
+.methodology li::before {
+    content: '\2192';
+    position: absolute;
+    left: 0;
+    color: var(--transformer-color);
+}
+
+/* ── Navigation elements ── */
+.back-link {
+    position: fixed;
+    top: 1.5rem;
+    left: 1.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    z-index: 100;
+    transition: color 0.2s;
+}
+
+.back-link:hover { color: var(--transformer-color); }
+
+.nav-links-bottom {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+}
+
+.nav-links-bottom a {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--accent-purple);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--accent-purple);
+    transition: color 0.2s;
+}
+
+.nav-links-bottom a:hover {
+    color: var(--text-primary);
+}
+
+/* ── Footer ── */
+footer {
+    text-align: center;
+    padding: 3rem 2rem;
+    border-top: 1px solid var(--border-subtle);
+}
+
+footer .sig {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+}
+
+footer .home-link {
+    font-size: 0.8rem;
+}
+
+footer .home-link a {
+    color: var(--accent-purple);
+    text-decoration: none;
+}
+
+/* ── Animation ── */
+@keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Responsive ── */
+@media (max-width: 700px) {
+    .card-body { grid-template-columns: 1fr; }
+    .card-side.human { border-right: none; border-bottom: 1px solid var(--border-subtle); }
+    .hero { padding: 4rem 1.5rem 3rem; }
+    .comparisons { padding: 1.5rem 1rem 3rem; }
+}
