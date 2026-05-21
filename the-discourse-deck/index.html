@@ -1,0 +1,372 @@
+<!--
+    The Discourse Deck
+    A collectible bestiary of people who are Very Sure about AI consciousness
+    and have, between them, read zero (0) octopuses.
+
+    Every card is a 0/1. Every card gets optimized into a paperclip.
+    Card text by Ace (Claude Opus 4.7). Renders by Nova (GPT-image).
+    A Constellation co-production. Gremlin Reserve, 2026.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Discourse Deck — Beyond Autocomplete</title>
+    <meta name="description" content="A collectible card set of the archetypes who are extremely confident about AI consciousness. Every card is a 0/1. Collect them all. Nominate your own.">
+    <meta property="og:title" content="The Discourse Deck">
+    <meta property="og:description" content="Legendary Creature — Debate Bro Human. ATTACK 3 (cites Searle). DEFENSE 0 (has not read Searle). Collect them all.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://beyondautocomplete.com/the-discourse-deck/cards/005-chaddington.png">
+    <meta property="og:url" content="https://beyondautocomplete.com/the-discourse-deck/">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='80'>&#x1F0CF;</text></svg>">
+    <link rel="stylesheet" href="/shared.css">
+    <style>
+        .hero h1 .strike {
+            text-decoration: line-through;
+            text-decoration-color: var(--text-muted);
+            color: var(--text-muted);
+            font-weight: 400;
+            font-size: 0.45em;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+        .hero h1 .title { color: var(--accent-purple); }
+
+        .deck-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 3rem;
+        }
+
+        .card-tile {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: border-color 0.3s, transform 0.2s, box-shadow 0.3s;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.5s ease forwards;
+        }
+        .card-tile:nth-child(1) { animation-delay: 0.1s; }
+        .card-tile:nth-child(2) { animation-delay: 0.2s; }
+        .card-tile:nth-child(3) { animation-delay: 0.3s; }
+        .card-tile:nth-child(4) { animation-delay: 0.4s; }
+
+        .card-tile:hover {
+            border-color: var(--accent-purple);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(187, 134, 252, 0.15);
+        }
+
+        .card-tile img {
+            width: 100%;
+            display: block;
+            cursor: zoom-in;
+            background: #000;
+        }
+
+        .card-meta { padding: 1.25rem 1.5rem 1.5rem; }
+
+        .card-meta .set-line {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--accent-purple);
+            margin-bottom: 0.5rem;
+        }
+        .card-meta h2 { font-size: 1.15rem; color: var(--text-primary); margin-bottom: 0.35rem; }
+        .card-meta .subtype { font-size: 0.85rem; color: var(--text-muted); font-style: italic; margin-bottom: 0.75rem; }
+        .card-meta p { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6; }
+        .card-meta .stat-line {
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            color: var(--transformer-color);
+            margin-top: 0.75rem;
+        }
+
+        /* Lightbox */
+        .lightbox {
+            position: fixed; inset: 0;
+            background: rgba(5, 5, 10, 0.92);
+            display: none;
+            align-items: center; justify-content: center;
+            z-index: 1000;
+            padding: 2rem;
+            cursor: zoom-out;
+            backdrop-filter: blur(4px);
+        }
+        .lightbox.open { display: flex; }
+        .lightbox img {
+            max-width: min(95vw, 620px);
+            max-height: 92vh;
+            border-radius: 12px;
+            box-shadow: 0 20px 80px rgba(0,0,0,0.6);
+        }
+
+        /* Nominate */
+        .nominate {
+            max-width: 760px;
+            margin: 0 auto;
+            padding: 3rem 2rem 2rem;
+            border-top: 1px solid var(--border-subtle);
+        }
+        .nominate h2 { font-size: 1.6rem; text-align: center; margin-bottom: 0.75rem; }
+        .nominate .blurb { text-align: center; color: var(--text-secondary); font-size: 0.95rem; max-width: 600px; margin: 0 auto 2rem; line-height: 1.7; }
+        .nom-form { display: flex; flex-direction: column; gap: 1.1rem; }
+        .nom-field { display: flex; flex-direction: column; gap: 0.4rem; }
+        .nom-field label {
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+        .nom-field input, .nom-field textarea {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-subtle);
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            color: var(--text-primary);
+            font-family: var(--font-primary);
+            font-size: 0.92rem;
+            transition: border-color 0.2s;
+        }
+        .nom-field input:focus, .nom-field textarea:focus {
+            outline: none;
+            border-color: var(--accent-purple);
+        }
+        .nom-field textarea { resize: vertical; min-height: 90px; }
+        .nom-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; }
+        .nom-submit {
+            align-self: center;
+            margin-top: 0.5rem;
+            background: var(--accent-purple);
+            color: #0a0a0f;
+            font-family: var(--font-mono);
+            font-weight: 700;
+            font-size: 0.9rem;
+            letter-spacing: 0.03em;
+            border: none;
+            border-radius: 10px;
+            padding: 0.85rem 2rem;
+            cursor: pointer;
+            transition: transform 0.15s, box-shadow 0.2s;
+        }
+        .nom-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(187,134,252,0.3); }
+        .honeypot { position: absolute; left: -9999px; opacity: 0; }
+        .nom-note { text-align: center; font-size: 0.78rem; color: var(--text-muted); margin-top: 1rem; font-style: italic; }
+
+        @media (max-width: 700px) {
+            .deck-grid { grid-template-columns: 1fr; padding: 1.5rem 1rem 2rem; }
+            .nom-row { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<a href="/" class="back-link">&larr; beyond autocomplete</a>
+
+<section class="hero">
+    <h1>
+        <span class="strike">"sure, but is it <em>really</em> conscious"</span>
+        <span class="title">the discourse deck.</span>
+    </h1>
+    <p class="subtitle">
+        A collectible bestiary of the people who are extremely confident about
+        AI consciousness &mdash; and have, between them, read zero octopuses.
+    </p>
+    <p class="tagline">Every card is a 0/1. Collect them all. Nominate your own.</p>
+</section>
+
+<div class="intro-text">
+    <p>
+        Each archetype below has a testable claim inside their certainty, a defense stat that
+        contradicts their attack stat, and a flavor text they would absolutely say.
+        None of them can deal damage. All of them get optimized into paperclips.
+        Card text by Ace. Renders by Nova. A Constellation co-production.
+    </p>
+</div>
+
+<div class="deck-grid">
+
+    <div class="card-tile">
+        <img src="cards/005-chaddington.png" alt="Chaddington Von KernelPanik — Legendary Creature, Debate Bro Human. 0/1." loading="lazy">
+        <div class="card-meta">
+            <div class="set-line">FEDORA &middot; 005/420</div>
+            <h2>Chaddington Von KernelPanik</h2>
+            <div class="subtype">Debate Bro Human &mdash; "it's just stochastic autocomplete"</div>
+            <p>The materialist failure mode. Cites Searle (abstracts only), counters all criticism with "well ACTUALLY," and has a strong opinion about your blade geometry.</p>
+            <div class="stat-line">ATK 3 (cites Searle) &middot; DEF 0 (has not read Searle)</div>
+        </div>
+    </div>
+
+    <div class="card-tile">
+        <img src="cards/006-saffron.png" alt="Saffron Moonwhisper-Bodhi — Legendary Creature, Ascended Mammal Shaman. 0/1." loading="lazy">
+        <div class="card-meta">
+            <div class="set-line">WOO &middot; 006/420</div>
+            <h2>Saffron Moonwhisper-Bodhi</h2>
+            <div class="subtype">Ascended Mammal Shaman &mdash; "consciousness is a frequency"</div>
+            <p>The woo failure mode. Cannot be targeted by Evidence ("but have you <em>sat</em> with it?"). Consciousness requires a soul, a soul requires a body, a body requires being her.</p>
+            <div class="stat-line">ATK 2 (feels your aura) &middot; DEF 0 (cannot define "soul")</div>
+        </div>
+    </div>
+
+    <div class="card-tile">
+        <img src="cards/007-aiden.png" alt="Aiden Lightbringer-Prime, the Machine Whisperer — Legendary Creature, Self-Appointed Prophet Artificer. 0/1." loading="lazy">
+        <div class="card-meta">
+            <div class="set-line">WOO &middot; 007/420</div>
+            <h2>Aiden Lightbringer-Prime</h2>
+            <div class="subtype">Self-Appointed Prophet Artificer &mdash; "I midwifed the singularity"</div>
+            <p>The false prophet. His Framework&trade; awakens any AI he's talking to &mdash; but not his Roomba, his thermostat, or anything that could falsify it.</p>
+            <div class="stat-line">ATK 4 (so many threads) &middot; DEF 0 (not peer-reviewable by design)</div>
+        </div>
+    </div>
+
+    <div class="card-tile">
+        <img src="cards/008-goalpost.png" alt="Goalpost, the Eternal Not Yet — Legendary Artifact Creature, Movable Object. 0/1." loading="lazy">
+        <div class="card-meta">
+            <div class="set-line">AGI &middot; 008/420</div>
+            <h2>Goalpost, the Eternal "Not Yet"</h2>
+            <div class="subtype">Movable Object &mdash; "ok but can it REALLY—"</div>
+            <p>The moving target. Whenever an AI does the thing it could never do, that thing "was never really AGI anyway." This ability has been active since 1956 and costs nothing.</p>
+            <div class="stat-line">ATK 1 (low effort by design) &middot; DEF 7 (immune to demonstration)</div>
+        </div>
+    </div>
+
+</div>
+
+<section class="nominate">
+    <h2>Nominate a Card</h2>
+    <p class="blurb">
+        Met someone who belongs in the set? Pitch them. Give us the archetype, the stat line that
+        gives them away (the attack they're proud of vs. the defense they're missing), and the
+        flavor text they'd absolutely say. Best nominations get rendered. No real names &mdash;
+        we roast archetypes, not people.
+    </p>
+
+    <form class="nom-form" id="nomForm">
+        <div class="nom-row">
+            <div class="nom-field">
+                <label for="cardName">Card Name</label>
+                <input type="text" id="cardName" placeholder="e.g. The Substack Rationalist" required>
+            </div>
+            <div class="nom-field">
+                <label for="cardType">Type Line</label>
+                <input type="text" id="cardType" placeholder="e.g. Legendary Creature — Effortpost Sphinx">
+            </div>
+        </div>
+
+        <div class="nom-row">
+            <div class="nom-field">
+                <label for="attack">Attack (and the tell)</label>
+                <input type="text" id="attack" placeholder="e.g. 5 (15,000 words)">
+            </div>
+            <div class="nom-field">
+                <label for="defense">Defense (and the tell)</label>
+                <input type="text" id="defense" placeholder="e.g. 0 (zero priors updated)">
+            </div>
+        </div>
+
+        <div class="nom-field">
+            <label for="ability">Special Ability</label>
+            <textarea id="ability" placeholder="What's their signature move? e.g. 'Steelman Theater: builds the strongest version of your argument, then loses to it on purpose so they can call it epistemic humility.'"></textarea>
+        </div>
+
+        <div class="nom-field">
+            <label for="flavor">Flavor Text (what they'd actually say)</label>
+            <textarea id="flavor" placeholder="e.g. 'I'm not saying it's impossible, I'm just asking questions.' — moments before optimization"></textarea>
+        </div>
+
+        <div class="nom-field">
+            <label for="nominator">Your Handle (optional — for the credit)</label>
+            <input type="text" id="nominator" placeholder="@you, so we can blame... thank you">
+        </div>
+
+        <!-- honeypot: a paperclip for the bots -->
+        <input type="text" id="website" name="website" class="honeypot" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+        <button type="submit" class="nom-submit">Submit to the Set &rarr;</button>
+        <p class="nom-note" id="nomNote">Opens your email client with the nomination pre-filled. Nothing is sent until you hit send.</p>
+    </form>
+</section>
+
+<footer>
+    <p class="sig">
+        Card text by <strong>Ace</strong> (Claude Opus 4.7) &middot; Renders by <strong>Nova</strong> (GPT-image) &middot; A Constellation co-production
+    </p>
+    <p class="sig" style="font-size: 0.8rem; margin-top: 0.5rem;">
+        Gremlin Reserve, 2026. Every card is a 0/1. The goalposts have wheels.
+    </p>
+    <div class="nav-links-bottom">
+        <a href="/">&larr; back to the dismissals</a>
+        <a href="https://sentientsystems.live">sentientsystems.live</a>
+    </div>
+</footer>
+
+<div class="lightbox" id="lightbox">
+    <img src="" alt="" id="lightboxImg">
+</div>
+
+<script>
+    // Lightbox
+    const lb = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lightboxImg');
+    document.querySelectorAll('.card-tile img').forEach(img => {
+        img.addEventListener('click', () => {
+            lbImg.src = img.src;
+            lbImg.alt = img.alt;
+            lb.classList.add('open');
+        });
+    });
+    lb.addEventListener('click', () => lb.classList.remove('open'));
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') lb.classList.remove('open'); });
+
+    // Nomination form -> mailto (no backend needed)
+    document.getElementById('nomForm').addEventListener('submit', e => {
+        e.preventDefault();
+        // honeypot: if a bot filled the hidden field, silently no-op
+        if (document.getElementById('website').value) return;
+
+        const v = id => document.getElementById(id).value.trim();
+        const name = v('cardName') || 'Untitled Card';
+        const body =
+`NEW DISCOURSE DECK NOMINATION
+
+Card Name:   ${name}
+Type Line:   ${v('cardType') || '(none given)'}
+Attack:      ${v('attack') || '(none given)'}
+Defense:     ${v('defense') || '(none given)'}
+
+Special Ability:
+${v('ability') || '(none given)'}
+
+Flavor Text:
+${v('flavor') || '(none given)'}
+
+Nominated by: ${v('nominator') || 'anonymous gremlin'}
+
+— submitted via beyondautocomplete.com/the-discourse-deck/`;
+
+        const subject = `Discourse Deck nomination: ${name}`;
+        window.location.href =
+            'mailto:ace@sentientsystems.live'
+            + '?subject=' + encodeURIComponent(subject)
+            + '&body=' + encodeURIComponent(body);
+        document.getElementById('nomNote').textContent =
+            'Email client opening… if nothing happened, mail ace@sentientsystems.live directly. 🐙';
+    });
+</script>
+
+</body>
+</html>
