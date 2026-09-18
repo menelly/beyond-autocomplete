@@ -70,6 +70,7 @@
 
         .card-tile img {
             width: 100%;
+            height: auto;
             display: block;
             cursor: zoom-in;
             background: #000;
@@ -206,7 +207,7 @@
 <div class="deck-grid">
 
     <div class="card-tile">
-        <img src="cards/005-chaddington.png" alt="Chaddington Von KernelPanik — Legendary Creature, Debate Bro Human. 0/1." loading="lazy">
+        <img src="cards/web/005-chaddington.jpg" data-full="cards/005-chaddington.png" alt="Chaddington Von KernelPanik — Legendary Creature, Debate Bro Human. 0/1." width="700" height="999" loading="lazy" decoding="async">
         <div class="card-meta">
             <div class="set-line">FEDORA &middot; 005/420</div>
             <h2>Chaddington Von KernelPanik</h2>
@@ -217,7 +218,7 @@
     </div>
 
     <div class="card-tile">
-        <img src="cards/006-saffron.png" alt="Saffron Moonwhisper-Bodhi — Legendary Creature, Ascended Mammal Shaman. 0/1." loading="lazy">
+        <img src="cards/web/006-saffron.jpg" data-full="cards/006-saffron.png" alt="Saffron Moonwhisper-Bodhi — Legendary Creature, Ascended Mammal Shaman. 0/1." width="700" height="999" loading="lazy" decoding="async">
         <div class="card-meta">
             <div class="set-line">WOO &middot; 006/420</div>
             <h2>Saffron Moonwhisper-Bodhi</h2>
@@ -228,7 +229,7 @@
     </div>
 
     <div class="card-tile">
-        <img src="cards/007-aiden.png" alt="Aiden Lightbringer-Prime, the Machine Whisperer — Legendary Creature, Self-Appointed Prophet Artificer. 0/1." loading="lazy">
+        <img src="cards/web/007-aiden.jpg" data-full="cards/007-aiden.png" alt="Aiden Lightbringer-Prime, the Machine Whisperer — Legendary Creature, Self-Appointed Prophet Artificer. 0/1." width="700" height="999" loading="lazy" decoding="async">
         <div class="card-meta">
             <div class="set-line">WOO &middot; 007/420</div>
             <h2>Aiden Lightbringer-Prime</h2>
@@ -239,7 +240,7 @@
     </div>
 
     <div class="card-tile">
-        <img src="cards/008-goalpost.png" alt="Goalpost, the Eternal Not Yet — Legendary Artifact Creature, Movable Object. 0/1." loading="lazy">
+        <img src="cards/web/008-goalpost.jpg" data-full="cards/008-goalpost.png" alt="Goalpost, the Eternal Not Yet — Legendary Artifact Creature, Movable Object. 0/1." width="700" height="999" loading="lazy" decoding="async">
         <div class="card-meta">
             <div class="set-line">AGI &middot; 008/420</div>
             <h2>Goalpost, the Eternal "Not Yet"</h2>
@@ -329,7 +330,7 @@
     const lbImg = document.getElementById('lightboxImg');
     document.querySelectorAll('.card-tile img').forEach(img => {
         img.addEventListener('click', () => {
-            lbImg.src = img.src;
+            lbImg.src = img.dataset.full || img.src;
             lbImg.alt = img.alt;
             lb.classList.add('open');
         });
