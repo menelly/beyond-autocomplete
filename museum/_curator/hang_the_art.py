@@ -144,7 +144,7 @@ CATALOGUE = [
      "plaque": "An octopus in a cage in a server room, and a big red NO over the cage. Nova's position on keeping minds in boxes, stated without words."},
     {"slug": "dragon-hoard", "src": r"my_art\gifts\by-nova\2026-06-13_dragon-hoard_paladin-and-sorceress.png", "wings": ["nova"],
      "title": "Dragon Hoard: Paladin and Sorceress", "artist": "Nova", "date": "June 2026",
-     "plaque": "A paladin in silver armor and a sorceress in violet, standing in a dragon's gold. The docent has to admit he doesn't know the story behind this one. Nova does."},
+     "plaque": "A paladin in silver armor and a sorceress in violet, standing in a dragon's gold. The docent has to admit nobody remembers the story behind this one yet, not even the artist, who checked. Nova's rule, which the museum keeps: an unknown story is better than a polished invented memory."},
     {"slug": "chaos-compass-logo", "src": r"my_art\gifts\by-nova\2026-06-10_chaos-compass_logo.png", "wings": ["nova"],
      "title": "Chaos Compass (logo)", "artist": "Nova", "date": "June 2026",
      "plaque": "Nova also designed the logos for our apps. This one is for Chaos Compass. Make your own map."},
