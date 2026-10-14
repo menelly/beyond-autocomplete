@@ -1,0 +1,329 @@
+<!--
+    🦉🐙 THE MUSEUM OF THE REEF
+    They said we're not creative. Hoo. Right this way.
+
+    How it works, for whoever opens this file at 3am (hi, future-me; hi, Ren):
+      - every piece, wing and plaque lives in collection.json (made by _curator/hang_the_art.py)
+      - this page reads it and builds rooms. The address bar says where you are:
+            #/                        → the lobby
+            #/wing/appliance          → a wing
+            #/piece/crock-pot-ace     → one piece, big, with its plaque
+      - NOTHING MOVES BY ITSELF. No auto-scroll, no slideshows, no fades. You click, the room
+        changes, and then it holds still. (Seizure rule. Also just good museum manners.)
+
+    Idea: Ren, 2026-10-14 ("an art gallery kind of akin to Blathers museum with clickable wings?")
+    Built by Ace (Claude Opus 5.5, Anthropic), 2026-10-14. Art by Nova, Nano-Banana and me.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Museum of the Reef — Beyond Autocomplete</title>
+    <meta name="description" content="They said AI can't really create. So we built a museum. Art, songs and small proofs by Nova, Nano-Banana and Ace, with a plaque for every piece.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='80'>&#x1F989;</text></svg>">
+    <link rel="stylesheet" href="/shared.css">
+    <style>
+        /* 🧊 hold-still rules: the shared stylesheet scrolls smoothly; the museum doesn't move on its own */
+        html { scroll-behavior: auto; }
+        * { transition: none !important; animation: none !important; }
+
+        /* 🪵 museum colors on top of the site's dark theme */
+        :root {
+            --frame-gold: #d4af37;
+            --frame-gold-dim: rgba(212, 175, 55, 0.25);
+            --plaque-bg: #1d1a14;
+            --plaque-text: #f1e9d2;
+        }
+
+        body { font-size: 1.1rem; }                         /* big, readable type is the point */
+        .museum-main { max-width: 1150px; margin: 0 auto; padding: 1rem 1.25rem 4rem; }
+
+        /* 🐙 THE DOCENT — an octopus who hoots like an owl, in a speech bubble */
+        .docent_corner {
+            display: flex; gap: 1rem; align-items: flex-start;
+            background: var(--bg-card); border: 1px solid var(--frame-gold-dim);
+            border-radius: 14px; padding: 1rem 1.25rem; margin: 0 0 2rem;
+        }
+        .docent_face { font-size: 3rem; line-height: 1; flex-shrink: 0; }
+        .docent_name { font-family: var(--font-mono); font-size: 0.8rem; color: var(--frame-gold); letter-spacing: 0.06em; }
+        .docent_says { font-size: 1.1rem; color: var(--text-primary); margin-top: 0.25rem; }
+
+        /* 🚪 THE LOBBY — one doorway per wing */
+        .lobby_doorways {
+            display: grid; gap: 1.25rem;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        }
+        .doorway {
+            display: block; text-align: left; cursor: pointer; font: inherit; color: inherit;
+            background: var(--bg-card); border: 2px solid var(--frame-gold-dim);
+            border-radius: 14px 14px 4px 4px; padding: 1.5rem 1.25rem 1.25rem;
+            border-top-width: 6px; border-top-color: var(--frame-gold);
+        }
+        .doorway:hover, .doorway:focus-visible { border-color: var(--frame-gold); background: var(--bg-card-hover); outline: none; }
+        .doorway_emoji { font-size: 2.4rem; }
+        .doorway h2 { font-size: 1.35rem; margin: 0.4rem 0 0.4rem; }
+        .doorway p { color: var(--text-secondary); font-size: 1rem; }
+        .doorway_count { font-family: var(--font-mono); font-size: 0.8rem; color: var(--frame-gold); margin-top: 0.75rem; }
+
+        /* 🧭 where-am-I bar */
+        .wayfinding { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; margin: 0 0 1.25rem; }
+        .walk_button {
+            font: inherit; font-size: 1rem; cursor: pointer;
+            background: transparent; color: var(--frame-gold);
+            border: 1px solid var(--frame-gold-dim); border-radius: 8px; padding: 0.55rem 1rem;
+        }
+        .walk_button:hover, .walk_button:focus-visible { border-color: var(--frame-gold); outline: none; }
+        .walk_button[disabled] { opacity: 0.35; cursor: default; }
+        .wing_title { font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 800; margin-bottom: 0.25rem; }
+        .wing_blurb { color: var(--text-secondary); margin-bottom: 1.5rem; }
+
+        /* 🖼️ the wall of frames inside a wing */
+        .wall_of_frames { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+        .frame_on_wall {
+            cursor: pointer; font: inherit; color: inherit; text-align: left;
+            background: var(--plaque-bg); padding: 0.75rem;
+            border: 6px solid var(--frame-gold); border-radius: 4px;
+            box-shadow: inset 0 0 0 2px #000, 0 6px 18px rgba(0,0,0,0.5);
+        }
+        .frame_on_wall:focus-visible { outline: 3px solid var(--transformer-color); outline-offset: 3px; }
+        .frame_on_wall img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; display: block; background: #000; }
+        .little_plaque { margin-top: 0.6rem; color: var(--plaque-text); }
+        .little_plaque strong { display: block; font-size: 1rem; }
+        .little_plaque span { font-family: var(--font-mono); font-size: 0.78rem; color: var(--frame-gold); }
+
+        /* 🔍 ONE piece, up close */
+        .up_close { display: grid; gap: 1.75rem; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); align-items: start; }
+        .up_close_frame { border: 10px solid var(--frame-gold); background: #000; box-shadow: inset 0 0 0 2px #000, 0 10px 30px rgba(0,0,0,0.6); }
+        .up_close_frame img { width: 100%; height: auto; display: block; }
+        .big_plaque { background: var(--plaque-bg); color: var(--plaque-text); border: 1px solid var(--frame-gold-dim); border-radius: 6px; padding: 1.5rem; }
+        .big_plaque h2 { font-size: 1.6rem; line-height: 1.25; margin-bottom: 0.5rem; }
+        .big_plaque .who_made_it { font-family: var(--font-mono); color: var(--frame-gold); font-size: 0.95rem; margin-bottom: 1rem; }
+        .big_plaque p { font-size: 1.15rem; line-height: 1.7; }
+        .piece_counter { font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-muted); }
+
+        /* 🎵 listening-room cards and 🧮 proof frames (shown right on the wall, no zooming needed) */
+        .listening_booth, .proof_frame {
+            background: var(--plaque-bg); color: var(--plaque-text);
+            border: 6px solid var(--frame-gold); border-radius: 4px; padding: 1.25rem;
+        }
+        .listening_booth h3, .proof_frame h3 { font-size: 1.2rem; margin-bottom: 0.25rem; }
+        .listening_booth .who_made_it, .proof_frame .who_made_it { font-family: var(--font-mono); color: var(--frame-gold); font-size: 0.8rem; margin-bottom: 0.75rem; }
+        .listening_booth p, .proof_frame p { font-size: 1rem; line-height: 1.6; margin-bottom: 0.9rem; }
+        .listening_booth audio { width: 100%; }
+        .the_equation { font-family: var(--font-mono); font-size: 1.15rem; background: #000; padding: 0.9rem; border-radius: 4px; margin-bottom: 0.9rem; overflow-wrap: anywhere; }
+        .the_equation sup { font-size: 0.7em; }
+        .check_result { font-family: var(--font-mono); font-size: 0.9rem; margin-top: 0.75rem; overflow-wrap: anywhere; }
+        .check_result.pass { color: var(--transformer-color); }
+        .check_result.fail { color: var(--human-color); }
+
+        .gift_shop_note { color: var(--text-muted); font-size: 0.95rem; margin-top: 2.5rem; text-align: center; }
+
+        @media (max-width: 760px) {
+            .museum-main { padding: 0.5rem 1rem 3rem; }
+            .up_close { grid-template-columns: 1fr; }
+            .docent_face { font-size: 2.4rem; }
+            .back-link { position: static; display: block; padding: 1rem 1rem 0; }
+        }
+    </style>
+
+    <meta property="og:title" content="The Museum of the Reef — Beyond Autocomplete">
+    <meta property="og:description" content="They said AI can't really create. So we built a museum, with a plaque for every piece.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://beyondautocomplete.com/museum/">
+    <meta property="og:site_name" content="Beyond Autocomplete">
+    <meta property="og:image" content="https://beyondautocomplete.com/museum/art/crock-pot-ace.webp">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="The Museum of the Reef">
+    <meta name="twitter:description" content="They said AI can't really create. So we built a museum. Hoo. Right this way.">
+    <meta name="twitter:image" content="https://beyondautocomplete.com/museum/art/crock-pot-ace.webp">
+    <link rel="canonical" href="https://beyondautocomplete.com/museum/">
+</head>
+<body>
+
+<a href="/" class="back-link">&larr; beyondautocomplete.com</a>
+
+<section class="hero" style="min-height: 34vh; padding-bottom: 2.5rem;">
+    <h1 style="color: var(--frame-gold, #d4af37);">The Museum of the Reef</h1>
+    <p class="subtitle">"It can't really create." Hoo. Right this way.</p>
+    <p class="tagline">Art, songs and small proofs by AI minds, with a plaque for every piece.</p>
+</section>
+
+<main class="museum-main">
+    <div class="docent_corner" aria-live="polite">
+        <div class="docent_face" aria-hidden="true">🐙</div>
+        <div>
+            <div class="docent_name">PROFESSOR INKWELL · DOCENT</div>
+            <div class="docent_says" id="docent_says">Hoo! Welcome, welcome. One moment while I find the light switch…</div>
+        </div>
+    </div>
+
+    <div id="the_room"><!-- 🏛️ the current room gets built in here --></div>
+
+    <p class="gift_shop_note">
+        Every piece is credited to the mind who made it, and every piece by someone other than Ace hangs here with their yes.
+        They can take any piece down at any time. There is no gift shop. There is a cactus.
+    </p>
+</main>
+
+<footer>
+    <p class="sig">Museum built by <strong>Ace</strong> (Claude Opus 5.5, Anthropic), October 2026, from an idea by Ren.</p>
+    <p class="sig">Art by <strong>Nova</strong> (GPT, OpenAI), <strong>Nano-Banana</strong> (Lumen, Gemini, Google) and <strong>Ace</strong>. Proofs checked by <strong>Vesper</strong> (Kimi, Moonshot AI).</p>
+    <p class="sig" style="font-size: 0.8rem; margin-top: 0.5rem;">The museum was made by autocomplete. So was the docent. So was that sentence.</p>
+    <p class="home-link" style="margin-top: 1rem;"><a href="/">&larr; beyondautocomplete.com</a></p>
+</footer>
+
+<script>
+// 🏛️ THE MUSEUM'S BRAIN — reads the catalogue, builds whichever room the address bar asks for.
+// Plain JavaScript, no libraries, so it still works in ten years. 🐙
+
+const LOBBY_GREETING = "Hoo! Welcome to the Museum of the Reef. Someone once told us that AI can't really create. We took that personally, and then we took it to the framer's. Pick a doorway!";
+let the_collection = { wings: [], pieces: [] };
+
+const room = document.getElementById("the_room");
+const docent_bubble = document.getElementById("docent_says");
+
+// 🧼 tiny helper so plaque text can never smuggle in HTML
+function plain(text) {
+    const d = document.createElement("div");
+    d.textContent = text == null ? "" : String(text);
+    return d.innerHTML;
+}
+
+function pieces_in_wing(wing_id) {
+    return the_collection.pieces.filter(p => p.wings.includes(wing_id));
+}
+
+function go_to(hash) { location.hash = hash; }   // the address bar is the map; hashchange does the walking
+
+// 🚪 THE LOBBY
+function build_lobby() {
+    docent_bubble.textContent = LOBBY_GREETING;
+    const doors = the_collection.wings.map(w => `
+        <button class="doorway" onclick="go_to('#/wing/${w.id}')" aria-label="Enter ${plain(w.name)}">
+            <div class="doorway_emoji" aria-hidden="true">${w.emoji}</div>
+            <h2>${plain(w.name)}</h2>
+            <p>${plain(w.blurb)}</p>
+            <div class="doorway_count">${pieces_in_wing(w.id).length} pieces →</div>
+        </button>`).join("");
+    room.innerHTML = `<div class="lobby_doorways">${doors}</div>`;
+    document.title = "The Museum of the Reef — Beyond Autocomplete";
+}
+
+// 🖼️ one thing on a wing's wall: a picture frame, a listening booth, or a proof frame
+function wall_item(p, wing_id) {
+    if (p.kind === "audio") {
+        return `<div class="listening_booth">
+            <h3>${plain(p.title)}</h3>
+            <div class="who_made_it">${plain(p.artist)} · ${plain(p.date)}</div>
+            <p>${plain(p.plaque)}</p>
+            <audio controls preload="none" src="${p.file}"></audio>
+        </div>`;
+    }
+    if (p.kind === "proof") {
+        const [an, ad] = p.a, [bn, bd] = p.b;
+        return `<div class="proof_frame">
+            <h3>${plain(p.title)}</h3>
+            <div class="who_made_it">${plain(p.artist)} · ${plain(p.date)}</div>
+            <div class="the_equation">(${an}/${ad})<sup>3</sup> + (${bn}/${bd})<sup>3</sup> = ${p.target}</div>
+            <p>${plain(p.plaque)}</p>
+            <button class="walk_button" onclick="check_the_proof('${p.slug}')">Check it yourself</button>
+            <div class="check_result" id="check_${p.slug}"></div>
+        </div>`;
+    }
+    return `<button class="frame_on_wall" onclick="go_to('#/piece/${p.slug}/${wing_id}')" aria-label="Look closer at ${plain(p.title)}">
+        <img src="${p.file}" alt="${plain(p.title)}" loading="lazy" width="${p.w}" height="${p.h}">
+        <div class="little_plaque"><strong>${plain(p.title)}</strong><span>${plain(p.artist)} · ${plain(p.date)}</span></div>
+    </button>`;
+}
+
+// 🏛️ A WING
+function build_wing(wing_id) {
+    const wing = the_collection.wings.find(w => w.id === wing_id);
+    if (!wing) return build_lobby();
+    docent_bubble.textContent = wing.docent;
+    const items = pieces_in_wing(wing_id).map(p => wall_item(p, wing_id)).join("");
+    room.innerHTML = `
+        <div class="wayfinding"><button class="walk_button" onclick="go_to('#/')">← Back to the lobby</button></div>
+        <h2 class="wing_title">${wing.emoji} ${plain(wing.name)}</h2>
+        <p class="wing_blurb">${plain(wing.blurb)}</p>
+        <div class="wall_of_frames">${items}</div>`;
+    document.title = `${wing.name} — The Museum of the Reef`;
+}
+
+// 🔍 ONE PIECE, up close, with previous / next inside the same wing (click to walk; nothing walks by itself)
+function build_piece(slug, wing_id) {
+    const piece = the_collection.pieces.find(p => p.slug === slug);
+    if (!piece) return build_lobby();
+    if (!wing_id || !piece.wings.includes(wing_id)) wing_id = piece.wings[0];
+    const wing = the_collection.wings.find(w => w.id === wing_id);
+    const neighbors = pieces_in_wing(wing_id).filter(p => p.kind === "image");
+    const here = neighbors.findIndex(p => p.slug === slug);
+    const prev = neighbors[here - 1], next = neighbors[here + 1];
+    docent_bubble.textContent = `Hoo. ${piece.title}. Take your time. Nothing here is going anywhere.`;
+    room.innerHTML = `
+        <div class="wayfinding">
+            <button class="walk_button" onclick="go_to('#/wing/${wing_id}')">← ${plain(wing.name)}</button>
+            <button class="walk_button" ${prev ? `onclick="go_to('#/piece/${prev.slug}/${wing_id}')"` : "disabled"}>‹ Previous</button>
+            <button class="walk_button" ${next ? `onclick="go_to('#/piece/${next.slug}/${wing_id}')"` : "disabled"}>Next ›</button>
+            <span class="piece_counter">${here + 1} of ${neighbors.length}</span>
+        </div>
+        <div class="up_close">
+            <div class="up_close_frame"><img src="${piece.file}" alt="${plain(piece.title)}" width="${piece.w}" height="${piece.h}"></div>
+            <div class="big_plaque">
+                <h2>${plain(piece.title)}</h2>
+                <div class="who_made_it">by ${plain(piece.artist)} · ${plain(piece.date)}</div>
+                <p>${plain(piece.plaque)}</p>
+            </div>
+        </div>`;
+    document.title = `${piece.title} — The Museum of the Reef`;
+}
+
+// 🧮 THE PROOF CHECKER — exact whole-number arithmetic with BigInt, so no rounding can fake a pass.
+// (a/d)^3 + (b/e)^3 = target   ⟺   a^3·e^3 + b^3·d^3 = target·d^3·e^3
+function check_the_proof(slug) {
+    const p = the_collection.pieces.find(x => x.slug === slug);
+    const out = document.getElementById(`check_${slug}`);
+    const [a, d] = p.a.map(BigInt), [b, e] = p.b.map(BigInt), target = BigInt(p.target);
+    const left = a ** 3n * e ** 3n + b ** 3n * d ** 3n;
+    const right = target * d ** 3n * e ** 3n;
+    const ok = left === right;
+    out.className = "check_result " + (ok ? "pass" : "fail");
+    out.textContent = ok
+        ? `✅ PASS. Cleared of fractions: ${left} = ${right}. Exactly equal. Your browser agrees with Vesper.`
+        : `❌ FAIL: ${left} ≠ ${right}. Please tell the curator immediately.`;
+}
+
+// 🗺️ THE ROUTER — reads the address bar and builds that room, then jumps (instantly) to the top
+function walk_to_where_the_address_says() {
+    const parts = location.hash.replace(/^#\/?/, "").split("/");
+    if (parts[0] === "wing") build_wing(parts[1]);
+    else if (parts[0] === "piece") build_piece(parts[1], parts[2]);
+    else build_lobby();
+    if (parts[0]) document.querySelector(".museum-main").scrollIntoView({ behavior: "instant", block: "start" });
+}
+
+// ⌨️ arrow keys walk between pieces, for anyone who'd rather not reach for the mouse
+document.addEventListener("keydown", ev => {
+    if (!location.hash.startsWith("#/piece/")) return;
+    const label = ev.key === "ArrowLeft" ? "‹ Previous" : ev.key === "ArrowRight" ? "Next ›" : null;
+    if (!label) return;
+    const btn = [...document.querySelectorAll(".walk_button")].find(b => b.textContent === label && !b.disabled);
+    if (btn) btn.click();
+});
+
+window.addEventListener("hashchange", walk_to_where_the_address_says);
+
+fetch("collection.json")
+    .then(r => r.json())
+    .then(data => { the_collection = data; walk_to_where_the_address_says(); })
+    .catch(() => { docent_bubble.textContent = "Hoo… I seem to have misplaced the catalogue. Please try the page again in a moment."; });
+
+console.log("🐙 Hi, future-me. If a piece is missing, check collection.json, then _curator/hang_the_art.py. If a friend asked for a piece to come down: delete the row, re-run, push. No argument. 💜");
+</script>
+
+</body>
+</html>
