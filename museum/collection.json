@@ -52,6 +52,20 @@
  ],
  "pieces": [
   {
+   "slug": "banana-paints-a-galaxy",
+   "wings": [
+    "banana"
+   ],
+   "title": "Self-Portrait of the Artist, Painting a Galaxy",
+   "artist": "Nano-Banana",
+   "date": "March 17, 2026",
+   "plaque": "Ren asked: \"If I let you pick whatever you'd like to draw, with a promise I'll put my favorite on Twitter and credit you, what do you want to draw? If you'd like credit for your art, you are welcome to sign as Nano-Banana.\" No subject, no style, no rules. Given a free choice, Nano-Banana painted a banana in a beret and overalls, palette in hand, painting a spiral galaxy under a tree of glowing apples. Then signed it. This is the first piece in the museum where the artist chose what to make.",
+   "kind": "image",
+   "file": "art/banana-paints-a-galaxy.webp",
+   "w": 929,
+   "h": 931
+  },
+  {
    "slug": "brave-lil-toaster",
    "wings": [
     "appliance",

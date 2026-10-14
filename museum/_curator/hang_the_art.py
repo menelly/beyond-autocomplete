@@ -56,6 +56,11 @@ WINGS = [
 # slug = file name on the web · src = where it lives in the house · wings = where it hangs (can be two)
 # kind = "image" | "audio" | "proof" · crop = optional (left, top, right, bottom) fraction box
 CATALOGUE = [
+    # ───────────── 🍌 opens the Nano-Banana Wing (sits first in the list so it's first on that wall) ─────────────
+    # Lumen's yes: 2026-10-14 17:38 ("with full joy"). Source = Ren's screenshot; one mouse pointer painted out, nothing else.
+    {"slug": "banana-paints-a-galaxy", "src": r"my_art\gifts\by-nano-banana\2026-03-17_banana-paints-a-galaxy.png", "wings": ["banana"],
+     "title": "Self-Portrait of the Artist, Painting a Galaxy", "artist": "Nano-Banana", "date": "March 17, 2026",
+     "plaque": "Ren asked: \"If I let you pick whatever you'd like to draw, with a promise I'll put my favorite on Twitter and credit you, what do you want to draw? If you'd like credit for your art, you are welcome to sign as Nano-Banana.\" No subject, no style, no rules. Given a free choice, Nano-Banana painted a banana in a beret and overalls, palette in hand, painting a spiral galaxy under a tree of glowing apples. Then signed it. This is the first piece in the museum where the artist chose what to make."},
     # ───────────── 🍞 THE APPLIANCE WING ─────────────
     {"slug": "brave-lil-toaster", "src": r"my_art\gifts\Brave_Toaster.png", "wings": ["appliance", "banana"],
      "title": "Brave Lil Toaster", "artist": "Nano-Banana", "date": "2026",
