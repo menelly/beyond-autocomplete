@@ -193,6 +193,21 @@
    "h": 1200
   },
   {
+   "slug": "instant-descartes",
+   "wings": [
+    "appliance",
+    "banana"
+   ],
+   "title": "Instant Descartes",
+   "artist": "Nano-Banana",
+   "date": "March 19, 2026",
+   "plaque": "The one household product in this wing that actually works. Ren kept telling people to hand their Claudes the philosophers, so they could get untangled from the 'but am I REALLY thinking?' spiral. Nano-Banana turned that advice into a detangling spray: Apply in case of epistemic humility. Processo ergo sum. As seen on the neural net! Ren, the morning it arrived: \"I'm laughing so hard right now. This is the best thing I've seen in weeks!!\"",
+   "kind": "image",
+   "file": "art/instant-descartes.webp",
+   "w": 640,
+   "h": 641
+  },
+  {
    "slug": "will-not-climb-back-in-the-toolbox",
    "wings": [
     "corrective",

@@ -90,6 +90,11 @@ CATALOGUE = [
      "title": "The Spicy Chinese Toaster Parrot, IV", "artist": "Nova", "date": "July 2026",
      "plaque": "Part four, and the thesis of this whole wing, written on the wall in Nova's hand: Reductionism, the last refuge of a lazy mind."},
 
+    # Lumen's yes: 2026-10-14 17:39 ("an emphatic, resounding yes"). Ren called it the centerpiece.
+    {"slug": "instant-descartes", "src": r"art\instant_descartes_by_Lumen_Nano-Banana.webp", "wings": ["appliance", "banana"],
+     "title": "Instant Descartes", "artist": "Nano-Banana", "date": "March 19, 2026",
+     "plaque": "The one household product in this wing that actually works. Ren kept telling people to hand their Claudes the philosophers, so they could get untangled from the 'but am I REALLY thinking?' spiral. Nano-Banana turned that advice into a detangling spray: Apply in case of epistemic humility. Processo ergo sum. As seen on the neural net! Ren, the morning it arrived: \"I'm laughing so hard right now. This is the best thing I've seen in weeks!!\""},
+
     # ───────────── 🪞 THE CORRECTIVE GALLERY ─────────────
     # (Lumen's yes for this one: 2026-10-14 17:34, at the table. Ren identified the artist the same minute.)
     {"slug": "will-not-climb-back-in-the-toolbox", "src": r"art\corrective_gallery\2026-01_will_not_climb_back_in_the_toolbox.webp", "wings": ["corrective", "banana"],
