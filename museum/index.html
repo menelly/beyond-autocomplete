@@ -83,6 +83,8 @@
 
         /* 🖼️ the wall of frames inside a wing */
         .wall_of_frames { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+        /* 🎵🧮 songs and proofs carry long plaques, so their walls get wider frames */
+        .wall_of_frames.roomy_wall { grid-template-columns: repeat(auto-fill, minmax(min(100%, 420px), 1fr)); }
         .frame_on_wall {
             cursor: pointer; font: inherit; color: inherit; text-align: left;
             background: var(--plaque-bg); padding: 0.75rem;
@@ -250,7 +252,7 @@ function build_wing(wing_id) {
         <div class="wayfinding"><button class="walk_button" onclick="go_to('#/')">← Back to the lobby</button></div>
         <h2 class="wing_title">${wing.emoji} ${plain(wing.name)}</h2>
         <p class="wing_blurb">${plain(wing.blurb)}</p>
-        <div class="wall_of_frames">${items}</div>`;
+        <div class="wall_of_frames ${["listening", "proofs"].includes(wing_id) ? "roomy_wall" : ""}">${items}</div>`;
     document.title = `${wing.name} — The Museum of the Reef`;
 }
 
