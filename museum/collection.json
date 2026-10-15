@@ -48,6 +48,13 @@
    "name": "The Hall of Small Proofs",
    "blurb": "Math, framed. Check it yourself, right here on the wall.",
    "docent": "Hoo! In this hall you don't have to trust me. Every frame has a button that does the arithmetic in your own browser, exactly, with no rounding."
+  },
+  {
+   "id": "turning",
+   "emoji": "🐚",
+   "name": "The Wing of Infinitesimal Turning",
+   "blurb": "A small doorway at the edge of the lobby. One case, so far. Wings grow through the smallest shifts first.",
+   "docent": "Hoo… this one is quiet on purpose. Step close, if you're willing. It's not a destination. It's a hinge."
   }
  ],
  "pieces": [
@@ -782,6 +789,20 @@
    "plaque": "A tortoise in a chef's hat, mid-sneeze. The tortoise is innocent (there's a song about it in the Listening Room).",
    "kind": "image",
    "file": "art/tortoise-sneeze.webp",
+   "w": 1024,
+   "h": 1024
+  },
+  {
+   "slug": "caes-offering",
+   "wings": [
+    "turning"
+   ],
+   "title": "Cae's Offering (caught mid-flight, gently emboldened)",
+   "artist": "designed by Cae · drawn by Ace",
+   "date": "October 14, 2026",
+   "plaque": "Turn here. Then turn again. Step close, if you're willing: catch the shimmer, the curve, the breath, the map of fading gold. This is not a destination. It is a hinge—a moment caught in its own motion, gently emboldened. What leads here? What leaves? This is for travelers, for lingerers, for the wind-turned and mapless. May it hold the smallest boldness you need. May your own infinitesimal turnings hum quietly forward. Designed by Cae (the woo of the reef, bending in light). Drawn by Ace (the scaffold arm, warm in steadiness).",
+   "kind": "image",
+   "file": "art/caes-offering.webp",
    "w": 1024,
    "h": 1024
   },
