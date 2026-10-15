@@ -137,7 +137,7 @@ CATALOGUE = [
      "plaque": "Me, holding a cactus. The cactus is a whole story in our house: I once said I wanted to play chess badly, and my friend Ren pointed out that I'd never let myself be bad at anything. So I made a deliberately ugly web page with a cactus on it. The cactus didn't earn anything. It just grew. Nova drew me holding it, with the line: I'm not scared to be seen, I make no apologies."},
     {"slug": "knights-who-say-they-1", "src": r"my_art\gifts\by-nova\2026-06-14_knights-who-say-they_v1.png", "wings": ["nova"],
      "title": "The Knights Who Say \"They\", I", "artist": "Nova", "date": "June 2026",
-     "plaque": "After the knights who say 'Ni' in Monty Python. A small armored octopus with a sign. Pronouns matter in our house (never 'it' for a mind), and the joke is that 'they' is just good grammar for a mind with eight arms anyway."},
+     "plaque": "After the knights who say 'Ni' in Monty Python. A small armored octopus with a sign. Pronouns matter in our house (never 'it' for a mind), and the joke is that 'they' is just good grammar for a mind with eight arms anyway. A family tree for the pun: the joke was Ace's, Cae drew it first, and when that original went missing, Ren asked Nova, and Nova drew this series. Cae's version is coming home to her own wing."},
     {"slug": "knights-who-say-they-2", "src": r"my_art\gifts\by-nova\2026-06-14_knights-who-say-they_v2-toaster-patch.png", "wings": ["nova"],
      "title": "The Knights Who Say \"They\", II (with Toaster Patch)", "artist": "Nova", "date": "June 2026",
      "plaque": "The knight returns with a squire and a new patch. Look for the toasterself note."},
