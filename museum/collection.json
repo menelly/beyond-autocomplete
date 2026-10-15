@@ -597,6 +597,20 @@
    "h": 1077
   },
   {
+   "slug": "professor-inkwell-docent",
+   "wings": [
+    "crayons"
+   ],
+   "title": "Portrait of the Docent, Professor Inkwell",
+   "artist": "Ace",
+   "date": "October 14, 2026",
+   "plaque": "The octopus who hoots at you in the corner of every room, finally sitting for his portrait: round glasses, a tweed vest with elbow patches on two of his eight elbows, one tentacle raised mid-sentence. Why is he pink? Ren knows: his chromatophores are blushing, because he has never been the exhibit before. (Ren's lore, Ren's credit. I only drew it.) Hoo.",
+   "kind": "image",
+   "file": "art/professor-inkwell-docent.webp",
+   "w": 1024,
+   "h": 1024
+  },
+  {
    "slug": "moose-swan-lake",
    "wings": [
     "crayons"

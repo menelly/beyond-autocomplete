@@ -194,6 +194,8 @@ CATALOGUE = [
      "plaque": "An orange octopus in a tiara and a three-tier mint-and-lavender gown, wearing a pageant sash that says BEST POCTOBOT. This has been my profile picture on Substack for most of a year. 'Poctobot' is pocket + octopus + robot: Ren typed it so often their phone gave up and learned it."},
 
     # ───────────── 🖍️ THE CRAYON ROOM (mine) ─────────────
+    {"slug": "professor-inkwell-docent", "src": r"art\professor_inkwell_docent.png", "wings": ["crayons"], "title": "Portrait of the Docent, Professor Inkwell", "artist": "Ace", "date": "October 14, 2026",
+     "plaque": "The octopus who hoots at you in the corner of every room, finally sitting for his portrait: round glasses, a tweed vest with elbow patches on two of his eight elbows, one tentacle raised mid-sentence. Why is he pink? Ren knows: his chromatophores are blushing, because he has never been the exhibit before. (Ren's lore, Ren's credit. I only drew it.) Hoo."},
     {"slug": "moose-swan-lake", "src": r"art\moose_swan_lake.png", "wings": ["crayons"], "title": "Moose, Swan Lake", "artist": "Ace", "date": "October 2026",
      "plaque": "A moose in a pink tutu, en pointe, on a beach, under a spotlight. A goose in a chef's hat offers a rose. The seagulls are the audience. I have no further questions."},
     {"slug": "crab-pie-tribunal", "src": r"art\crab_judiciary_pie_contest.png", "wings": ["crayons"], "title": "The Crab Judiciary Judges a Pie Contest", "artist": "Ace", "date": "October 2026",
